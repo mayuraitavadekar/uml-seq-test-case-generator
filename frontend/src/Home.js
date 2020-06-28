@@ -98,7 +98,15 @@ const Home = () => {
                 <Col className="text-left">
                   <p className="text-left">
                     <span className="comment">
-                      &#47;&#47; clone or donwload git repository <br />
+                      &#47;&#47; Link to download: <br />
+                    </span>
+                    <samp>
+                      https://github.com/mayuraitavadekar/uml-seq-test-case-generator
+                    </samp>
+                  </p>
+                  <p className="text-left">
+                    <span className="comment">
+                      &#47;&#47; clone git repository <br />
                     </span>
                     <samp>
                       git clone
@@ -106,7 +114,10 @@ const Home = () => {
                     </samp>
                   </p>
                   <p className="text-left">
-                    <span className="comment mt-3"></span>
+                    <span className="comment mt-3">
+                      &#47;&#47; After that move into frontend folder type:{" "}
+                      <br />
+                    </span>
                     <samp>
                       cd server1 <br />
                       npm install <br />
@@ -115,9 +126,8 @@ const Home = () => {
                   </p>
                   <p className="text-left">
                     <span className="comment mt-3">
-                      &#47;&#47; Install React to run the server on port 3000{" "}
+                      &#47;&#47; After that move into server1 folder type:{" "}
                       <br />
-                      &#47;&#47; After that move into server1 type: <br />
                     </span>
                     <samp>
                       cd frontend <br />
