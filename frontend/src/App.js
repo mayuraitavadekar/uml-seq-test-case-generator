@@ -9,6 +9,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { getJSON } from "./apicalls";
+import { ExportCSV } from "./apicalls";
 import { scriptRunner } from "./parser";
 
 const App = () => {
@@ -23,6 +24,10 @@ const App = () => {
 
   const [pv_result, setPv_result] = useState([]);
 
+  const [CSV, setCSV] = useState([]);
+
+  const [appstate, setAppstate] = useState("Upload XMI File!");
+
   const { error, success, formData, pv_disabled, test_case_disabled } = values;
 
   const handleChange = (name) => (event) => {
@@ -32,6 +37,7 @@ const App = () => {
   };
 
   const onSubmitFile = (event) => {
+    setAppstate("Wait...");
     event.preventDefault();
     setValues({ ...values, error: "", loading: true, success: false });
     getJSON(formData).then((data) => {
@@ -47,6 +53,18 @@ const App = () => {
           if (result) {
             setPv_result(result);
             console.log(result);
+
+            const x = [];
+            for (let i = 0; i < result.length; i++) {
+              console.log(result[i].p);
+              console.log(result[i].v.join(","));
+              x.push({
+                parameter: result[i].p,
+                values: result[i].v.join(","),
+              });
+            }
+            setCSV(x);
+            setAppstate("Generated Successfully!!");
           }
         });
         setValues({
@@ -97,7 +115,7 @@ const App = () => {
         <Container fluid>
           <Row>
             <Col>
-              <h1 className="text-center">Test Case Generator</h1>
+              <h1 className="text-center">**{appstate}**</h1>
             </Col>
           </Row>
         </Container>
@@ -127,13 +145,11 @@ const App = () => {
               </Button>
             </Col>
             <Col xs={4} className="border-right">
-              <Button
-                className="ml-5 mt-2"
-                variant="info"
-                disabled={test_case_disabled}
-              >
-                Generate Test Cases
-              </Button>
+              <ExportCSV
+                csvData={CSV}
+                fileName={"sample"}
+                disability={test_case_disabled}
+              />
             </Col>
           </Row>
         </Container>
