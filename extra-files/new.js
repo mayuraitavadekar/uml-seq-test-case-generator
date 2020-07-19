@@ -135,7 +135,8 @@ const extractGuardConditions = (fragments) => {
       // traverse the operand array
       for (var j = 0; j < operand_array.length; j++) {
         // take each element one by one
-        var condition = operand_array[j]["guard"]["$"].specification;
+        if(operand_array[j]["guard"]) {
+        	var condition = operand_array[j]["guard"]["$"].specification;
         // save this condition to guard condition array
         guard_condition_array.push(condition);
         }

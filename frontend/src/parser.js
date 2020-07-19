@@ -94,6 +94,19 @@ export const extractGuardConditions = (fragments) => {
       var f = fragments[i];
       // take operand array in that fragment
       var operand_array = f["operand"];
+      
+      // traverse the operand array
+      for (var j = 0; j < operand_array.length; j++) {
+        // take each element one by one
+        if(operand_array[j]["guard"]) {
+        	var condition = operand_array[j]["guard"]["$"].specification;
+        // save this condition to guard condition array
+        guard_condition_array.push(condition);
+        }
+        
+      }
+      
+      /*
       // traverse the operand array
       for (let j = 0; j < operand_array.length; j++) {
         // take each element one by one
@@ -101,6 +114,7 @@ export const extractGuardConditions = (fragments) => {
         // save this condition to guard condition array
         guard_condition_array.push(condition);
       }
+      */
     }
   }
 
@@ -259,7 +273,23 @@ export const scriptRunner = (data) => {
   return new Promise((resolve, reject) => {
     data = JSON.stringify(data);
     parser = JSON.parse(data);
+    
+    
+    lifelines =
+      parser["xmi:XMI"]["uml:Model"]["packagedElement"]["packagedElement"][
+        "ownedMember"
+      ]["lifeline"];
 
+    messages =
+      parser["xmi:XMI"]["uml:Model"]["packagedElement"]["packagedElement"][
+        "ownedMember"
+      ]["message"];
+
+    fragments =
+      parser["xmi:XMI"]["uml:Model"]["packagedElement"]["packagedElement"][
+        "ownedMember"
+      ]["fragment"];
+	/*
     lifelines =
       parser["xmi:XMI"]["uml:Model"]["packagedElement"][1]["ownedMember"][
         "lifeline"
@@ -274,6 +304,7 @@ export const scriptRunner = (data) => {
       parser["xmi:XMI"]["uml:Model"]["packagedElement"][1]["ownedMember"][
         "fragment"
       ];
+      */
 
     extractData(lifelines, messages, fragments);
     paramterValuesMapping(messages, fragments);

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div>
-      <Container fluid>
+      <Container>
         <Row>
           <Col>
             <h1 className="text-center main-heading text-black font-weight-bold m-auto">
@@ -14,8 +14,8 @@ const Home = () => {
             </h1>
           </Col>
         </Row>
-        <Row>
-          <Col className="text-center">
+        <Row className="mt-2">
+          <Col xs={12} md={12} lg={12} className="text-center">
             <Badge variant="dark" className="pt-2 pb-2 pl-2 pr-2">
               A simple test case generator for UML diagrams built in React,
               Nodejs and Express server bindings.
@@ -24,9 +24,9 @@ const Home = () => {
         </Row>
         <hr />
       </Container>
-      <Container>
+      <Container fluid>
         <Row>
-          <Col xs={12} md={6} lg={6} className="left-col">
+          <Col xs={12} md={12} lg={6} className="left-col">
             <h4 className="text-center">Process</h4>
             <div className="mt-2 divprops">
               <Row>
@@ -91,7 +91,7 @@ const Home = () => {
               </Row>
             </div>
           </Col>
-          <Col xs={12} md={6} lg={6} className="right-col">
+          <Col xs={12} md={12} lg={6} className="right-col">
             <h4 className="text-center">Local Usage</h4>
             <div className="mt-2 divprops">
               <Row>
