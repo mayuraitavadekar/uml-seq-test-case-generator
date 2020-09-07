@@ -24,6 +24,8 @@ const App = () => {
 
   const [pv_result, setPv_result] = useState([]);
 
+  const [infeasibleInputs, setInfeasibleInputs] = useState([]);
+
   const [CSV, setCSV] = useState([]);
 
   const [appstate, setAppstate] = useState("Upload XMI File!");
@@ -52,12 +54,27 @@ const App = () => {
         scriptRunner(data).then((result) => {
           if (result) {
             setPv_result(result);
-            console.log(result);
+            // console.log(result);
+
+            let temp_infeasible_arr = [];
+            // storing infeasible pairs
+            for (let i = 0; i < result.length; i++) {
+              if (result[i].v.includes("Infeasible Input")) {
+                // saperate by coma
+                let temp = result[i].p.split(",");
+                temp_infeasible_arr.push({
+                  p1: temp[0],
+                  p2: temp[1],
+                });
+              }
+            }
+
+            setInfeasibleInputs(temp_infeasible_arr);
 
             const x = [];
             for (let i = 0; i < result.length; i++) {
-              console.log(result[i].p);
-              console.log(result[i].v.join(","));
+              //console.log(result[i].p);
+              //console.log(result[i].v.join(","));
               x.push({
                 parameter: result[i].p,
                 values: result[i].v.join(","),
@@ -79,6 +96,7 @@ const App = () => {
   };
 
   const pvPrinter = () => {
+    //console.log("this is pv_result", pv_result);
     if (pv_result.length !== 0) {
       return (
         <div>
@@ -92,18 +110,52 @@ const App = () => {
             </thead>
             <tbody>
               {pv_result.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{index}</td>
-                    <td>{item.p}</td>
-                    {item.v.map((value, index) => {
-                      return <td>{value + " "}</td>;
-                    })}
-                  </tr>
-                );
+                // eslint-disable-next-line
+                if (!item.v.includes("Infeasible Input")) {
+                  return (
+                    <tr key={index}>
+                      <td>{index}</td>
+                      <td>{item.p}</td>
+                      {item.v.map((value, index) => {
+                        return <td key={index}>{value + " "}</td>;
+                      })}
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </Table>
+
+          {infeasibleInputs.length === 0 ? (
+            <div>
+              <p className="text-center">No infeasible inputs present.</p>
+            </div>
+          ) : (
+            <div>
+              <p className="text-center">Infeasible Inputs</p>
+
+              <Table striped bordered hover variant="dark">
+                <thead>
+                  <tr>
+                    <th>Sr. No</th>
+                    <th>1</th>
+                    <th>2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {infeasibleInputs.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index}</td>
+                        <td>{item.p1}</td>
+                        <td>{item.p2}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          )}
         </div>
       );
     }
